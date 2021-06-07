@@ -1,12 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Loader from 'react-loader-spinner';
 import './SearchPage.css';
-import {createTweetDivs, getTweetData} from '../../helpers';
-
-const KEYWORD_URL = process.env.NODE_ENV === 'development' ? 
-                    'http://localhost:8080/search/content?q' : 'https://twitter-drops.herokuapp.com/search/content?q';
-const USER_URL = process.env.NODE_ENV === 'development' ? 
-                    'http://localhost:8080/user?username' : 'https://twitter-drops.herokuapp.com/user?username';
+import { createTweetDivs, getTweetData } from '../../helpers';
 
 const SearchPage = () => {
     const [tweetArray, setTweetArray] = useState([]);
@@ -18,15 +13,15 @@ const SearchPage = () => {
     }
 
     const handleEnter = async (event) => {
-        if(event.code !== "Enter") return;
-        if(searchInput.length === 0){
+        if (event.code !== "Enter") return;
+        if (searchInput.length === 0) {
             setTweetArray([])
             return;
-        } 
+        }
 
-        searchInput.indexOf('@') > -1 ? 
-            updateTweetArray(USER_URL, searchInput.slice(1))
-        :   updateTweetArray(KEYWORD_URL, searchInput);
+        searchInput.indexOf('@') > -1 ?
+            updateTweetArray('/search/content?q', searchInput.slice(1))
+            : updateTweetArray('user?username', searchInput);
 
     }
 
@@ -42,9 +37,9 @@ const SearchPage = () => {
     return (
         <div id="search-main">
             <div id="input-div">
-                <input id="search-input" 
-                    type="text" 
-                    placeholder="Search by @user or keyword, then Enter..." 
+                <input id="search-input"
+                    type="text"
+                    placeholder="Search by @user or keyword, then Enter..."
                     onInput={handleInput}
                     onKeyUp={handleEnter} />
             </div>
@@ -53,14 +48,14 @@ const SearchPage = () => {
                     <div id="loader-div" className="page-content">
                         <Loader type="Bars" color="#FFFFFF" height={80} width={80} />
                     </div>
-                :   createTweetDivs(tweetArray)
+                    : createTweetDivs(tweetArray)
             }
             {
                 tweetArray.length <= 1 ? <div className="pointer"></div> : <div id="scroll-pointer" className="pointer">V</div>
             }
         </div>
     )
-    
+
 }
 
 export default SearchPage;

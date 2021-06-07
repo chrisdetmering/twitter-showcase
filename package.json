@@ -4,8 +4,9 @@
   "description": "Backend for twitter showcase",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm run watch --prefix client", 
+    "dev": "concurrently \"nodemon server.js \" \" npm run client\"", 
     "heroku-postbuild": "cd ./client && npm install && npm run build"
   },
   "keywords": [
@@ -20,6 +21,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "concurrently": "^6.2.0",
     "nodemon": "^2.0.7"
   }
 }

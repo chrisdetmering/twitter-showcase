@@ -1,53 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import {Link} from 'react-router-dom';
-import {FiMenu} from 'react-icons/fi';
-import {changeElementClass} from '../../helpers';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { FiMenu } from 'react-icons/fi';
 import './NavBar.css'
 
 const NavBar = () => {
     const [isMenuShowing, setIsMenuShowing] = useState(false);
 
-    useEffect(() => {
-        changeElementClass(window.location.pathname, '.nav-option', 'selected')
-    }, [])
-
-    const handleClick = (event) => {
-        changeElementClass(event.target.id, '.nav-option', 'selected');
-        closeMobileMenu();
+    const handleClick = () => {
+        setIsMenuShowing(false);
     }
 
     const handleMobileClick = () => {
-        if(isMenuShowing){
-            closeMobileMenu();
-        } else {
-            openMobileMenu();
-        }
         setIsMenuShowing(!isMenuShowing);
     }
 
-    const closeMobileMenu = () => {
-        document.getElementsByClassName("mobile")[0].classList.remove('full-screen')
-        document.querySelectorAll('.nav-option').forEach(navOption => {
-            navOption.classList.remove('visible');
-        })
-    }
-
-    const openMobileMenu = () => {
-        document.getElementsByClassName("mobile")[0].classList.add('full-screen')
-        document.querySelectorAll('.nav-option').forEach(navOption => {
-            navOption.classList.add('visible');
-        })
-    }
-
-    return(
+    return (
         <nav id="main">
-            <div className="mobile" onClick={handleMobileClick}><FiMenu size="3em"/></div>
-            <Link to='/' id="/" className="nav-option selected" onClick={handleClick}>Home</Link>
-            <Link to='/search' id="/search" className="nav-option" onClick={handleClick}>Search</Link>
-            <Link to='/discover' id="/discover" className="nav-option" onClick={handleClick}>Discover</Link>
+            <div className={`mobile ${isMenuShowing ? 'full-screen' : ''}`} onClick={handleMobileClick}><FiMenu size="3em" /></div>
+            <NavLink exact to='/' id="/" className={`nav-option ${isMenuShowing ? 'visible' : ''}`} activeClassName="active" onClick={handleClick}>Home</NavLink>
+            <NavLink exact to='/search' id="/search" className={`nav-option ${isMenuShowing ? 'visible' : ''} `} activeClassName="active" onClick={handleClick}>Search</NavLink>
+            <NavLink exact to='/discover' id="/discover" className={`nav-option ${isMenuShowing ? 'visible' : ''} `} activeClassName="active" onClick={handleClick}>Discover</NavLink>
         </nav>
     )
-    
 }
 
 export default NavBar;

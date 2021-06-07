@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Loader from 'react-loader-spinner';
 import './DiscoverPage.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import {changeElementClass, createTweetDivs, getTweetData} from '../../helpers';
-
-const USER_URL = process.env.NODE_ENV === 'development' ? 
-                    'http://localhost:8080/user?username' : 'https://twitter-drops.herokuapp.com/user?username';
+import { createTweetDivs, getTweetData } from '../../helpers';
 
 
 const DiscoverPage = () => {
@@ -14,8 +11,7 @@ const DiscoverPage = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        updateTweetArray(USER_URL, selectedOption)
-        addClickHandlers();
+        updateTweetArray('user?username', selectedOption)
     }, [selectedOption])
 
     const updateTweetArray = (URL, searchTerm) => {
@@ -28,14 +24,9 @@ const DiscoverPage = () => {
     }
 
     const handleClick = (event) => {
-        changeElementClass(event.target.id, '.option-button', 'selected-option');
         setSelectedOption(event.target.id)
     }
 
-    const addClickHandlers = () => {
-        document.querySelectorAll('.option-button')
-            .forEach(option => option.addEventListener('click', handleClick))
-    }
 
     return (
         <div id="discover-content">
@@ -44,19 +35,19 @@ const DiscoverPage = () => {
                     <div id="loader-div" className="page-content">
                         <Loader type="Bars" color="#FFFFFF" height={80} width={80} />
                     </div>
-                :   createTweetDivs(tweetArray)
+                    : createTweetDivs(tweetArray)
             }
             {
-                tweetArray.length <= 1 ? 
-                    <div className="pointer"></div> 
-                  : <div id="scroll-pointer" className="pointer">V</div>
+                tweetArray.length <= 1 ?
+                    <div className="pointer"></div>
+                    : <div id="scroll-pointer" className="pointer">V</div>
             }
             <div id="artist-options">
-                <div id="illenium" className="option-button selected-option">Illenium</div>
-                <div id="iamalanwalker" className="option-button">Alan Walker</div>
-                <div id="kygomusic" className="option-button">Kygo</div>
-                <div id="wearegalantis" className="option-button">Galantis</div>
-                <div id="KSHMRmusic" className="option-button">KSHMR</div>
+                <div id="illenium" className={`option-button ${"illenium" === selectedOption ? ' selected-option' : ''}`} onClick={handleClick}>Illenium</div>
+                <div id="iamalanwalker" className={`option-button ${"iamalanwalker" === selectedOption ? ' selected-option' : ''}`} onClick={handleClick}>Alan Walker</div>
+                <div id="kygomusic" className={`option-button ${"kygomusic" === selectedOption ? ' selected-option' : ''}`} onClick={handleClick}>Kygo</div>
+                <div id="wearegalantis" className={`option-button ${"wearegalantis" === selectedOption ? ' selected-option' : ''}`} onClick={handleClick}>Galantis</div>
+                <div id="KSHMRmusic" className={`option-button ${"KSHMRmusic" === selectedOption ? ' selected-option' : ''}`} onClick={handleClick}>KSHMR</div>
             </div>
         </div>
     )
